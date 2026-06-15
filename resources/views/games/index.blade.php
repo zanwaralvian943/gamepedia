@@ -49,6 +49,45 @@
                                     Release date:
                                     {{ isset($game['released']) ? \Carbon\Carbon::parse($game['released'])->format('d M Y') : 'N/A' }}
                                 </p>
+                                <div class="text-left bg-gray-100 p-3 rounded-lg text-xs text-gray-600 mb-4 font-mono">
+                                    <span class="font-bold text-gray-700 block mb-1.5 flex items-center gap-1">
+                                        💻 PC Requirements:
+                                    </span>
+                                    @php
+                                        $requirementsText = '';
+                                        if (isset($game['platforms'])) {
+                                            foreach ($game['platforms'] as $p) {
+                                                if (
+                                                    $p['platform']['id'] == 4 &&
+                                                    isset($p['requirements_en']['minimum'])
+                                                ) {
+                                                    $requirementsText = str_replace(
+                                                        'Minimum:',
+                                                        '',
+                                                        $p['requirements_en']['minimum'],
+                                                    );
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        $cleanText = strip_tags($requirementsText);
+                                        $lines = array_filter(explode("\n", $cleanText));
+                                    @endphp
+
+                                    @if (count($lines) > 0)
+                                        <ul class="space-y-1 max-h-36 overflow-y-auto pr-1 text-[11px] list-none">
+                                            @foreach ($lines as $line)
+                                                @if (trim($line) != '')
+                                                    <li class="border-b border-gray-200/60 pb-1 last:border-none last:pb-0">
+                                                        {{ trim($line) }}
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <p class="text-[11px] text-gray-400 italic">No specifications available.</p>
+                                    @endif
+                                </div>
 
                             </div>
                         </div>
