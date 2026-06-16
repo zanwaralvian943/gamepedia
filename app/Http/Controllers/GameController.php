@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http as FacadesHttp;
 
 class GameController extends Controller
 {
+
     public function index(Request $request)
     {
         $currentPage = $request->query('page', 1);
@@ -28,5 +29,27 @@ class GameController extends Controller
             $totalPages = 1;
         }
         return view('games.index', compact('games', 'currentPage', 'totalPages'));
+    }
+
+    public function show($id)
+    {
+
+        $apiKey = env('RAWG_API_KEY');
+        $baseUrl = env('BASE_URL');
+
+        $response = FacadesHttp::get("${baseUrl}/games/{$id}", [
+            'key' => $apiKey
+        ]);
+        $responseSS = FacadesHttp::get("${baseUrl}/games/{$id}/screenshots", [
+            'key' => $apiKey
+        ]);
+
+        if ($response->successful()) {
+            $game = $response->json();
+            $screenshots = $responseSS->successful() ? ($responseSS->json()['results'] ?? []) : [];
+        } else {
+            abort(404, 'Game tidak ditemukan di RAWG API');
+        }
+        return view('games.show', compact('game', 'screenshots'));
     }
 }
