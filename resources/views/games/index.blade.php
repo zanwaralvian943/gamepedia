@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Gamepedia - Discover Games')
 @section('content')
-    <div class="p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+    <div class="py-8 px-6 bg-white border border-gray-200 rounded-lg shadow-sm">
 
         <h1 class="text-2xl font-bold tracking-tight text-gray-900 mb-2">
             Discover Games
@@ -17,7 +17,7 @@
                     <div
                         class="bg-gray-50 border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col justify-between">
                         <div>
-                            <a href="{{ route('games.show', $game['id']) }}">
+                            <a href="{{ route('games.show', $game['slug']) }}">
                                 <img class="w-full h-48 object-cover"
                                     src="{{ $game['background_image'] ?? 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600' }}"
                                     alt="{{ $game['name'] }}" />
@@ -38,7 +38,7 @@
                                 </div>
 
 
-                                <a href="#">
+                                <a href="{{ route('games.show', $game['slug']) }}">
                                     <h5
                                         class="mt-3 mb-2 text-lg font-bold tracking-tight text-gray-900 hover:text-purple-600 transition-colors line-clamp-1">
                                         {{ $game['name'] }}
@@ -51,13 +51,37 @@
                                 </p>
 
                             </div>
+
                         </div>
 
                         <div class="p-5 pt-0">
-                            <a href="#"
-                                class="inline-flex items-center text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 py-2 w-full justify-center transition-colors">
-                                + Wishlist
-                            </a>
+
+                            @auth
+                                <form action="{{ route('wishlist.toggle') }}" method="POST" class="inline m-0">
+                                    @csrf
+                                    <input type="hidden" name="game_slug" value="{{ $game['slug'] }}">
+                                    <input type="hidden" name="game_name" value="{{ $game['name'] }}">
+                                    <input type="hidden" name="image" value="{{ $game['background_image'] ?? '' }}">
+
+                                    @php
+                                        $isWishlisted = \App\Models\Wishlist::where('user_id', Auth::id())
+                                            ->where('game_slug', $game['slug'])
+                                            ->exists();
+                                    @endphp
+                                    <button type="submit"
+                                        class="inline-flex items-center text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 py-2 w-full justify-center transition-colors"
+                                        title="{{ $isWishlisted ? 'Remove from wishlist' : 'add to Wishlist' }}">
+                                        + Wishlist
+                                    </button>
+                                </form>
+                            @endauth
+
+                            @guest
+                                <a href="{{ route('login') }}"
+                                    class="inline-flex items-center text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 py-2 w-full justify-center transition-colors">
+                                    + Wishlist
+                                </a>
+                            @endguest
                         </div>
                     </div>
                 @endforeach
@@ -65,7 +89,7 @@
             </div>
         @else
             <div class="p-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 border border-yellow-200" role="alert">
-                <span class="font-medium">Waduh!</span> Gagal mengambil data game.
+                <span class="font-medium">Failed</span> get data game.
             </div>
         @endif
 
@@ -151,4 +175,5 @@
 
         </ul>
     </nav>
+
 @endsection

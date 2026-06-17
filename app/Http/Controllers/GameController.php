@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http as FacadesHttp;
 
@@ -14,7 +15,7 @@ class GameController extends Controller
         $apiKey = env('RAWG_API_KEY');
         $baseUrl = env('BASE_URL');
         $pageSize = 12;
-        $response = FacadesHttp::get("${baseUrl}/games", [
+        $response = FacadesHttp::get("{$baseUrl}/games", [
             'key' => $apiKey,
             'page' => $currentPage,
             'page_size' => $pageSize
@@ -31,18 +32,20 @@ class GameController extends Controller
         return view('games.index', compact('games', 'currentPage', 'totalPages'));
     }
 
-    public function show($id)
+    public function show($slug)
     {
 
         $apiKey = env('RAWG_API_KEY');
         $baseUrl = env('BASE_URL');
 
-        $response = FacadesHttp::get("${baseUrl}/games/{$id}", [
+        $response = FacadesHttp::get("{$baseUrl}/games/{$slug}", [
             'key' => $apiKey
         ]);
-        $responseSS = FacadesHttp::get("${baseUrl}/games/{$id}/screenshots", [
+        $responseSS = FacadesHttp::get("{$baseUrl}/games/{$slug}/screenshots", [
             'key' => $apiKey
         ]);
+        $recentPosts = Post::where('game_slug', $slug)->with('user')->latest()->take(3)->get();
+        $totalPosts = Post::where('game_slug', $slug)->count();
 
         if ($response->successful()) {
             $game = $response->json();
@@ -50,6 +53,6 @@ class GameController extends Controller
         } else {
             abort(404, 'Game tidak ditemukan di RAWG API');
         }
-        return view('games.show', compact('game', 'screenshots'));
+        return view('games.show', compact('game', 'screenshots', 'recentPosts', 'totalPosts'));
     }
 }

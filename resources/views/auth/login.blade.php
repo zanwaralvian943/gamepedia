@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Gamepedia - Login')
 @section('content')
-
     <div class="flex justify-center items-center min-h-[70vh] px-4">
         <div class="w-full max-w-sm bg-white p-6 border border-gray-200 rounded-2xl shadow-sm">
 
@@ -48,6 +47,7 @@
                     </a>
                 </div>
             </form>
+
         </div>
     </div>
 

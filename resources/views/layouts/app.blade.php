@@ -17,7 +17,7 @@
 
     @include('components.navbar')
 
-    <main class="grow container mx-auto px-4 py-8">
+    <main class="grow container mx-auto ">
         @yield('content')
     </main>
 
@@ -26,6 +26,19 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
 
     @stack('scripts')
+    @if (session('success'))
+        <div id="toast-alert"
+            class="fixed bottom-6 right-6 z-50 p-4 text-sm text-fg-success-strong rounded-base bg-success-soft shadow-lg"
+            role="alert">
+            <span class="font-medium">Success!</span> {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(() => {
+                const el = document.getElementById('toast-alert');
+                if (el) el.style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
 </body>
 
 </html>
