@@ -93,6 +93,12 @@
                         Community
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('chat.index') }}"
+                        class="block py-2 px-3 md:p-0 transition-colors {{ request()->routeIs('community.*') ? 'text-purple-600 font-bold' : 'text-gray-700 hover:text-purple-600' }}">
+                        Chat AI
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

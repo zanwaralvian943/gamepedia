@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\WishlistController;
@@ -19,4 +20,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/community/post/{post_id}/comment', [PostController::class, 'storeComment'])->name('community.comment');
     Route::delete('/community/post/{id}', [PostController::class, 'destroyPost'])->name('community.post.destroy');
     Route::delete('/community/comment/{id}', [PostController::class, 'destroyComment'])->name('community.comment.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat/{id?}', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat', [ChatController::class, 'send'])->name('chat.send');
 });
