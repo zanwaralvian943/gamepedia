@@ -34,5 +34,15 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'gemini' => [
+        'key' => env('GEMINI_API_KEY'),
+    ],
+    'groq' => [
+        'key' => env('GROQ_API_KEY'),
+    ],
+    'rawg' => [
+        'key'      => env('RAWG_API_KEY'),
+        'base_url' => env('RAWG_BASE_URL', 'https://api.rawg.io/api'),
+    ],
 
 ];

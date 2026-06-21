@@ -13,6 +13,9 @@
             <li>
                 <a href="{{ route('community.index') }}" class="hover:underline me-4 md:me-6">Community</a>
             </li>
+            <li>
+                <a href="{{ route('chat.index') }}" class="hover:underline me-4 md:me-6">Chat AI</a>
+            </li>
         </ul>
     </div>
 </footer>

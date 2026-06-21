@@ -6,7 +6,7 @@
         <div class="max-w-4xl px-4 py-10 mx-auto lg:px-6">
 
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900">💬 Community Forum</h2>
+                <h2 class="text-2xl font-bold text-gray-900">Community Forum</h2>
                 <p class="text-sm text-gray-400 mt-1">{{ $posts->total() }} diskusi dari semua game</p>
             </div>
             @if (session('success'))

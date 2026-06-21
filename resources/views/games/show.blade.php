@@ -195,7 +195,7 @@
 
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-gray-900">💬 Community Forum</h3>
+                    <h3 class="text-2xl font-bold text-gray-900">Community Forum</h3>
                     <p class="text-sm text-gray-400 mt-1">
                         {{ $totalPosts }} diskusi untuk <span
                             class="font-medium text-gray-600">{{ $game['name'] }}</span>

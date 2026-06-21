@@ -18,7 +18,7 @@
                 @if ($depth < 1)
                     <button onclick="toggleReplyForm('comment-reply-{{ $comment->id }}')"
                         class="text-xs text-gray-400 hover:text-purple-600  transition-colors">
-                        ↩ Balas
+                        Balas
                     </button>
                 @endif
                 @if (Auth::id() === $comment->user_id)

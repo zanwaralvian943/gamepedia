@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,11 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/chat/{id?}', [ChatController::class, 'index'])->name('chat.index');
     Route::post('/chat', [ChatController::class, 'send'])->name('chat.send');
+    Route::post('/chat/stream', [ChatController::class, 'stream'])->name('chat.stream');
+    Route::delete('/chat/session/{id}', [ChatController::class, 'deleteSession'])->name('chat.session.delete');
+    Route::patch('/chat/session/{id}', [ChatController::class, 'renameSession'])->name('chat.session.rename');
+});
+Route::middleware('auth')->group(function () {
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 });
